@@ -1,7 +1,7 @@
 {
   "name": "caesar-cipher-tool",
   "version": "1.0.0",
-  "description": "",
+  "description": "cli app to encode/decode Caesar's cipher",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "commander": "^5.0.0",
-    "stream": "0.0.2"
+    "stream": "0.0.2",
+    "through2": "^3.0.1"
   }
 }
