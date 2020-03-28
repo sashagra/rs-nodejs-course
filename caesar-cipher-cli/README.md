@@ -17,12 +17,13 @@ Or just download the folder from repository
 $ git clone https://github.com/sashagra/rs-nodejs-course.git
 ```
 3.Put you file with text to encode into the folder (caesar-cipher-cli) then create new file to output encoded text
-4.Open terminal(cmd or powershell) in this folder and install all modules dependencies by command (you need pre inastalled nodejs and npm):
+
+4.Open terminal(cmd or powershell) in this folder and install all modules dependencies by command (you need pre installed nodejs and npm):
 
 ```bash
 $ npm install
 ```
-5.Now you can run the script by command:
+5.Now you can run the script by command like this:
 
 ```bash
 $ node index --action encode --shift 7 --input yourfile.txt --output encoded.txt
