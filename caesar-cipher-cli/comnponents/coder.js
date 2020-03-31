@@ -9,11 +9,11 @@ module.exports = (inputStr, key, param) => {
   }
 
   let output = '';
-  for (symbol of inputStr) {
-    output += symbolCoder(symbol);
+  for (letter of inputStr) {
+    output += symbolCoder(letter);
   }
 
-  function symbolCoder() {
+  function symbolCoder(symbol) {
     if (ABC.indexOf(symbol.toLowerCase()) >= 0) {
       let index = ABC.indexOf(symbol.toLowerCase()) + key;
       if (index >= ABC.length) {
