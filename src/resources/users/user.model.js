@@ -14,6 +14,9 @@ class User {
   }
 
   static toResponse(user) {
+    if (!user) {
+      return false;
+    }
     const { id, name, login } = user;
     return { id, name, login };
   }
