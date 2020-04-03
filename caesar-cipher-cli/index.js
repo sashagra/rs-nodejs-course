@@ -1,7 +1,9 @@
+/*eslint-disable */
 const { program } = require('commander');
 const createStream = require('./comnponents/create-stream');
 const through2 = require('through2');
 const codeDecodeStr = require('./comnponents/coder');
+// eslint-disable-next-line node/no-unsupported-features/node-builtins
 const { pipeline } = require('stream');
 const validateInputParams = require('./comnponents/validate-params');
 

@@ -9,7 +9,7 @@ module.exports = (inputStr, key, param) => {
   }
 
   let output = '';
-  for (letter of inputStr) {
+  for (const letter of inputStr) {
     output += symbolCoder(letter);
   }
 

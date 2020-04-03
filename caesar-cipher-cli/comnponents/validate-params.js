@@ -1,3 +1,4 @@
+/*eslint-disable */
 const path = require('path');
 const fs = require('fs');
 const constants = require('./constants');
@@ -39,6 +40,7 @@ module.exports = function validateInputParams(params) {
       fs.accessSync(outputFilePath, fs.constants.R_OK | fs.constants.W_OK);
     } catch (err) {
       process.stderr.write(`${constants.ERROR_MESSAGES.noOutputFile}\n`);
+      // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
   }
