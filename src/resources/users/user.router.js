@@ -4,19 +4,27 @@ const usersService = require('./user.service');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
-  res.json(users.map(User.toResponse));
+  if (users.length < 1) {
+    res.status(404).send('Users not found');
+  } else {
+    res.json(users.map(User.toResponse));
+  }
 });
 
 router.route('/').post(async (req, res) => {
   const user = new User(req.body);
-  const users = await usersService.getAll();
-  usersService.pushNew(user, users);
-  res.json(User.toResponse(user));
+  if (!User.toResponse(user)) {
+    res.status(400).send('Bad request');
+  } else {
+    const users = await usersService.getAll();
+    usersService.pushNew(user, users);
+    res.json(User.toResponse(user));
+  }
 });
 
 router.route('/:id').get(async (req, res) => {
   const users = await usersService.getAll();
-  const user = await usersService.getById(users, req.params.id);
+  const user = usersService.getById(users, req.params.id);
   if (!User.toResponse(user)) {
     res.status(404).send('User not found');
   } else {
@@ -26,19 +34,19 @@ router.route('/:id').get(async (req, res) => {
 
 router.route('/:id').put(async (req, res) => {
   const users = await usersService.getAll();
-  const user = await usersService.getById(users, req.params.id);
+  const user = usersService.getById(users, req.params.id);
 
   if (!User.toResponse(user)) {
     res.status(404).send('User not found');
   } else {
     await usersService.update(users, user, req.body);
-    res.status(200).send('The user has been updated.');
+    res.json(User.toResponse(user));
   }
 });
 
 router.route('/:id').delete(async (req, res) => {
   const users = await usersService.getAll();
-  const user = await usersService.getById(users, req.params.id);
+  const user = usersService.getById(users, req.params.id);
 
   if (!User.toResponse(user)) {
     res.status(404).send('User not found');
