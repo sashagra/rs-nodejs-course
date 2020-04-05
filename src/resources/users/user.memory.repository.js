@@ -1,11 +1,12 @@
 const path = require('path');
 const fsPr = require('fs').promises;
 
-const p = path.join(__dirname, 'users.json');
+const p = path.join(__dirname, '..', 'data', 'users.json');
 
 module.exports = {
   getAll: async () => {
     const data = await fsPr.readFile(p, 'utf-8');
+    console.log(p);
     return JSON.parse(data);
   },
 

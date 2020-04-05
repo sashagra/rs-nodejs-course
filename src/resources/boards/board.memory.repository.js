@@ -2,7 +2,7 @@ const path = require('path');
 const fsPr = require('fs').promises;
 const { Column } = require('./board.model');
 
-const p = path.join(__dirname, 'boards.json');
+const p = path.join(__dirname, '..', 'data', 'boards.json');
 
 module.exports = {
   getAll: async () => {
