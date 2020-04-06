@@ -5,7 +5,7 @@ const boardService = require('./board.service');
 router.route('/').get(async (req, res) => {
   const boards = await boardService.getAll();
   if (boards.length < 1) {
-    res.status(404).send('Bards not found');
+    res.status(404).send('Boards not found');
   } else {
     res.json(boards);
   }
@@ -21,36 +21,32 @@ router.route('/').post(async (req, res) => {
 router.route('/:id').get(async (req, res) => {
   const boards = await boardService.getAll();
   const board = boardService.getById(boards, req.params.id);
-  // if (!board) {
-  //   res.status(404).send('Board not found');
-  // } else {
-  //   res.json(board);
-  // }
-  res.json(board);
-});
-
-router.route('/:id').put(async (req, res) => {
-  const boards = await boardService.getAll();
-  const board = await boardService.getById(boards, req.params.id);
-
   if (!board) {
     res.status(404).send('Board not found');
   } else {
-    await boardService.update(boards, board, req.body);
     res.json(board);
   }
 });
 
-// router.route('/:id').delete(async (req, res) => {
-//   const users = await usersService.getAll();
-//   const user = await usersService.getById(users, req.params.id);
+router.route('/:id').put(async (req, res) => {
+  const board = boardService.update(req.params.id, req.body);
 
-//   if (!User.toResponse(user)) {
-//     res.status(404).send('User not found');
-//   } else {
-//     await usersService.remove(users, req.params.id);
-//     res.status(204).send('The user has been deleted');
-//   }
-// });
+  if (!board) {
+    res.status(404).send('Board not found');
+  } else {
+    res.json(board);
+  }
+});
+
+router.route('/:id').delete(async (req, res) => {
+  const isDeleted = await boardService.remove(req.params.id);
+
+  if (!isDeleted) {
+    res.status(404).send('Board not found');
+  } else {
+    // res.status(204).send('The board has been deleted');
+    res.json(isDeleted);
+  }
+});
 
 module.exports = router;
