@@ -1,12 +1,12 @@
 const path = require('path');
 const fsPr = require('fs').promises;
+const { unassignTasks } = require('../tasks/task.memory.repository');
 
 const p = path.join(__dirname, '..', 'data', 'users.json');
 
 module.exports = {
   getAll: async () => {
     const data = await fsPr.readFile(p, 'utf-8');
-    console.log(p);
     return JSON.parse(data);
   },
 
@@ -32,9 +32,17 @@ module.exports = {
 
     await fsPr.writeFile(p, JSON.stringify(users));
   },
-  async remove(users, id) {
+  async remove(id) {
+    let users = await this.getAll();
     users = users.filter(c => c.id !== id);
-
+    const idx = users.findIndex(el => el.id === id);
+    if (idx < 0) {
+      return false;
+    }
+    users.splice(idx, 1);
     await fsPr.writeFile(p, JSON.stringify(users));
+    await unassignTasks(id);
+
+    return true;
   }
 };

@@ -1,7 +1,7 @@
 const path = require('path');
 const fsPr = require('fs').promises;
-// const { Column } = require('./board.model');
-
+const removeTasks = require('../tasks/task.memory.repository')
+  .removeAllForBoard;
 const p = path.join(__dirname, '..', 'data', 'boards.json');
 
 module.exports = {
@@ -32,6 +32,8 @@ module.exports = {
   },
   async remove(boards, id) {
     boards = boards.filter(c => c.id !== id);
+    await removeTasks(id);
     await fsPr.writeFile(p, JSON.stringify(boards));
+    return true;
   }
 };
