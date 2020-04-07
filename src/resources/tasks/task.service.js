@@ -6,7 +6,7 @@ const getAllInBoard = async boardId => {
   return tasks.map(Task.toResponse);
 };
 
-const getById = async (boardId, id) => {
+const getById = async (boardId = false, id) => {
   const task = await tasksRepo.getById(boardId, id);
   return task;
 };
@@ -16,11 +16,8 @@ const pushNew = async (data, idBoard) => {
   return await tasksRepo.pushNew(newTask);
 };
 
-// const update = async (id, newdata) => {
-//   const tasks = await tasksRepo.getAll();
-//   const task = tasksRepo.getById(tasks, id);
-//   return await tasksRepo.update(tasks, task, newdata);
-// };
+const update = async (boardId, taskId, newdata) =>
+  await tasksRepo.update(boardId, taskId, newdata);
 
 const removeOne = async (boardId, taskId) => {
   const tasks = await tasksRepo.getAllInBoard(boardId);
@@ -41,6 +38,6 @@ module.exports = {
   pushNew,
   getById,
   removeTasks,
-  // update,
+  update,
   removeOne
 };

@@ -1,5 +1,6 @@
 const path = require('path');
 const fsPr = require('fs').promises;
+const Task = require('./task.model');
 
 const p = path.join(__dirname, '..', 'data', 'tasks.json');
 
@@ -9,12 +10,12 @@ module.exports = {
     return JSON.parse(data).filter(c => c.boardId === boardId) || [];
   },
 
-  pushNew: async task => {
-    const data = await fsPr.readFile(p, 'utf-8');
-    const tasks = JSON.parse(data);
-    tasks.push(task);
+  pushNew: async data => {
+    const newTask = new Task(data);
+    const tasks = JSON.parse(await fsPr.readFile(p, 'utf-8'));
+    tasks.push(newTask);
     await fsPr.writeFile(p, JSON.stringify(tasks));
-    return tasks[tasks.length - 1];
+    return newTask;
   },
 
   async getById(boardId, taskId) {
@@ -28,11 +29,25 @@ module.exports = {
     const task = tasks.find(c => c.id === taskId);
     return task;
   },
-  async update(tasks, task, newData) {
+
+  // const updateTask = async (boardId, taskId, task) => {
+  //   const currentTask = await getTask(boardId, taskId);
+  //   const taskIndex = tasks.findIndex(el => el.id === taskId);
+  //   const updatedTask = { ...currentTask, ...task };
+  //   tasks.splice(taskIndex, 1, updatedTask);
+  //   return updatedTask;
+  // };
+
+  async update(boardId, taskId, newData) {
+    const data = await fsPr.readFile(p, 'utf-8');
+    const tasks = JSON.parse(data);
+    const task = await this.getById(boardId, taskId);
+
     const idx = tasks.findIndex(c => c.id === task.id);
-    tasks[idx].title = newData.title;
+    const updatedTask = { ...task, ...newData };
+    tasks.splice(idx, 1, updatedTask);
     await fsPr.writeFile(p, JSON.stringify(tasks));
-    return tasks[idx];
+    return updatedTask;
   },
   async removeOne(tasks, id) {
     tasks = tasks.filter(c => c.id !== id);

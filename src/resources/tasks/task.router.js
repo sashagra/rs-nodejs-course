@@ -21,9 +21,6 @@ router.route('/').post(async (req, res) => {
 
 router.route('/:id').get(async (req, res) => {
   const task = await taskService.getById(req.boardId, req.params.id);
-  console.log('getById task:', task);
-  console.log('boardId:', req.boardId);
-  console.log('taskId:', req.params.id);
   if (!task) {
     res.status(404).send('Task not found');
   } else {
@@ -40,15 +37,10 @@ router.route('/:id').delete(async (req, res) => {
   }
 });
 
-// router.route('/:id').put(async (req, res) => {
-//   const task = taskService.update(req.params.id, req.body);
-
-//   if (!task) {
-//     res.status(404).send('task not found');
-//   } else {
-//     res.json(task);
-//   }
-// });
+router.put(async (req, res) => {
+  const task = await taskService.update(req.boardId, req.params.id, req.body);
+  res.json(task);
+});
 
 // router.route('/:id').delete(async (req, res) => {
 //   const isDeleted = await taskService.remove(req.params.id);
